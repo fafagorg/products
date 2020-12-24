@@ -24,6 +24,7 @@ dbConnect().then(
 //var oasTools = require('oas-tools');
 //var jsyaml = require('js-yaml');
 const Product = require('./products');
+const { update } = require('./products');
 
 //var spec = fs.readFileSync(path.join(__dirname, '/api/oas-doc.yaml'), 'utf8');
 //var oasDoc = jsyaml.safeLoad(spec);
@@ -86,3 +87,93 @@ app.post("/products", (req,res)=>{
       }
   });
 })
+
+app.get('/products/:productId', (req, res) => {
+  var productId = req.params.productId;
+  console.log(Date() + " - GET a /products/productId");
+  Product.find({"id":productId},(err,products)=>{
+    if (err){
+        console.log(Date() + "-"+err);
+        res.sendStatus(500);
+    }else{
+        res.send(products.map((product)=>{
+            return product.cleanup();
+        }));
+    }
+});
+});
+
+app.get('/products/client/:clientId', (req, res) => {
+  var clientId = req.params.clientId;
+  console.log(Date() + " - GET a /products/client/clientId");
+  Product.find({"seller":clientId},(err,products)=>{
+    if (err){
+        console.log(Date() + "-"+err);
+        res.sendStatus(500);
+    }else{
+        res.send(products.map((product)=>{
+            return product.cleanup();
+        }));
+    }
+});
+});
+
+app.delete("/products/:productId", (req, res) => {        
+  var productId = req.params.productId;
+  console.log(Date() + " - DELETE a /products/{id}");
+  Product.remove({ "id": productId },(err, products) => {
+      if (err) {
+        console.log(Date() + "-"+err);
+      }
+      if (products.length == 0) {
+          res.sendStatus(404);
+      }
+      else {
+          res.sendStatus(200);
+      }
+  });
+
+});
+
+app.delete("/products", (req, res) => {   
+  console.log(Date() + " - DELETE a /products");     
+  Product.remove({},(err, products) => {
+      if (err) {
+        console.log(Date() + "-"+err);
+      }
+      if (products.length == 0) {
+          res.sendStatus(404);
+      }
+      else {
+          res.sendStatus(200);
+      }
+  });
+
+});
+
+app.put("/products/:productId", (req, res) => {
+            var productId = req.params.productId;
+            var updatedProduct = req.body;
+            console.log(Date() + " - PUT a /products/{id}");     
+
+            //COMPROBACIONES
+            if (updatedProduct.length > 5 || updatedProduct.id != productId || updatedProduct["id"] == null 
+                || updatedProduct["price"] == null || updatedProduct["seller"] == null || updatedProduct["category"] == null 
+                || updatedProduct["name"] == null) {
+                    res.sendStatus(400);
+                    return;
+            }    
+            
+            Product.updateOne({ "id": productId},updatedProduct,(err, products) => {
+                if (err) {
+                    console.log("Error: " + err);
+                    res.sendStatus(500);
+                    return;
+                }
+                else {
+                    console.log("editado con exito")
+                    res.sendStatus(200);
+                }
+            });
+        
+        });
