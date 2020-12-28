@@ -20,7 +20,7 @@ module.exports.addProduct = function addProduct(req, res, next) {
   //comprobacion de errores
   Product.create(product,(err)=>{
       if (err){
-          console.log(Date() + "-HOLAAAAAAAAAAA-"+err);
+          console.log(Date() + "-"+err);
           res.sendStatus(500);
       }else{
         res.send("Producto creado con éxito!");

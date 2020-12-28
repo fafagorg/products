@@ -86,8 +86,9 @@ app.post("/products", (req,res)=>{
           res.sendStatus(201);
       }
   });
-})
+})*/
 
+/*
 app.get('/products/:productId', (req, res) => {
   var productId = req.params.productId;
   console.log(Date() + " - GET a /products/productId");

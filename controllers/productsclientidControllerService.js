@@ -1,13 +1,35 @@
 'use strict'
+const Product = require('../products');
 
 module.exports.findproductsbyclient = function findproductsbyclient(req, res, next) {
-  res.send({
-    message: 'This is the mockup controller for findproductsbyclient'
-  });
+  var clientId = req.id.value;
+  //console.log(req);
+  console.log(Date() + " - GET a /products/client/clientId");
+  Product.find({"seller":clientId},(err,products)=>{
+    if (err){
+        console.log(Date() + "-"+err);
+        res.sendStatus(500);
+    }else{
+        res.send(products.map((product)=>{
+            return product.cleanup();
+        }));
+    }
+});
 };
 
 module.exports.deleteAllClientProducts = function deleteAllClientProducts(req, res, next) {
-  res.send({
-    message: 'This is the mockup controller for deleteAllClientProducts'
+  var clientId = req.id.value;
+  console.log(Date() + " - DELETE a /products/client/{id}");
+  Product.deleteMany({ "seller": clientId },(err, products) => {
+      if (err) {
+        console.log(Date() + "-"+err);
+      }
+      if (products.length == 0) {
+          res.sendStatus(404);
+      }
+      else {
+        res.send("Productos del cliente eliminado con éxito!")
+        //res.sendStatus(200);
+      }
   });
 };
