@@ -211,20 +211,32 @@ components:
     Product:
       allOf:
         - $ref: '#/components/schemas/NewProduct'
-        - required:
-            - id
-          properties:
-            id:
-              type: integer
-              format: int64
+        #- required:
+        #    - id
+        #  properties:
+        #    id:
+        #      type: integer
+        #      format: int64*/
     NewProduct:
       required:
         - name
+        - category
+        - price
+        - seller
       properties:
         name:
           type: string
-        tag:
+        category:
           type: string
+        price:
+          type: integer
+          format: int64
+        seller:
+          type: integer
+          format: int64
+        id:
+          type: integer
+          format: int64
     Error:
       required:
         - code
