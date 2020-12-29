@@ -31,9 +31,9 @@ describe("Products API", () => {
                 new Product({"name":"productY","category":"clothes","price":2,"seller":2})
             ];
 
-            dbFind = jest.spyOn(db, "find");
+            dbFind = jest.spyOn(Product, "find");
             dbFind.mockImplementation((query, callback) => {
-                callback(null,contacts);
+                callback(null,products);
             });
         });
 
@@ -50,7 +50,7 @@ describe("Products API", () => {
         const product = {"name":"productX","category":"sports","price":1,"seller":1};
 
         beforeEach(() => {
-            dbInsert = jest.spyOn(db, "create");
+            dbInsert = jest.spyOn(Contact, "create");
         });
 
         it("Should add a new contact if everything is fine", () => {
