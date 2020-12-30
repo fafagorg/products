@@ -40,23 +40,21 @@ oasTools.initialize(oasDoc, app, function() {
   });*/
 });
 
-dbConnect().then(
-  () => {
+dbConnect().then( () => {
       app.listen(port);
       console.log("server ready");
-  },
+  /*},
   err => {
-      console.log("Connection error: "+err);
-  }
-);
+      console.log("Connection error: "+err);*/
+});
 
-app.get('/info', function(req, res) {
+app.get('/info', (req, res) => {
   res.send({
     info: "This API was generated using oas-generator!",
     name: oasDoc.info.title
   });
 });
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.send("<html><body><h1>API del microservicio de productos</h1></body></html>");
 });
 /*
@@ -179,3 +177,5 @@ app.put("/products/:productId", (req, res) => {
         
         });
 */
+
+module.exports = app;

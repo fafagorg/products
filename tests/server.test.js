@@ -17,12 +17,13 @@ describe("Products API", () => {
         it("Should return an HTML document", () => {
             return request(app).get("/").then((response) => {
                 expect(response.status).toBe(200);
+                //console.log(response.type);
                 expect(response.type).toEqual(expect.stringContaining("html"));
-                expect(response.type).toEqual(expect.stringContaining("h1"));
+                expect(response.text).toEqual(expect.stringContaining("h1"));
             });
         });
     });
-
+    
     describe("GET /products", () => {
         
         beforeAll(() => {
@@ -50,7 +51,7 @@ describe("Products API", () => {
         const product = {"name":"productX","category":"sports","price":1,"seller":1};
 
         beforeEach(() => {
-            dbInsert = jest.spyOn(Contact, "create");
+            dbInsert = jest.spyOn(Product, "create");
         });
 
         it("Should add a new contact if everything is fine", () => {
@@ -59,8 +60,10 @@ describe("Products API", () => {
             });
 
             return request(app).post("/api/products").send(product).then((response) => {
-                expect(response.statusCode).toBe(201);
-                expect(dbInsert).toBeCalledWith(contact, expect.any(Function));
+                //console.log(response);
+                expect(response.statusCode).toBe(200);
+                expect(response.text).toEqual(expect.stringContaining("Producto creado con éxito!"));
+                expect(dbInsert).toBeCalledWith(product, expect.any(Function));
             });
         });
 
@@ -76,4 +79,3 @@ describe("Products API", () => {
         })
     })
 });
-
