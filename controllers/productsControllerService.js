@@ -16,7 +16,7 @@ module.exports.findProducts = function findProducts(req, res, next) {
 
 module.exports.addProduct = function addProduct(req, res, next) {
   var product = req.undefined.value;
-  console.log(req.undefined.value);
+  //console.log(req.undefined.value);
   //comprobacion de errores
   Product.create(product,(err)=>{
       if (err){

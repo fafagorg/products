@@ -6,10 +6,14 @@ module.exports.findproductsbyclient = function findproductsbyclient(req, res, ne
   //console.log(req);
   console.log(Date() + " - GET a /products/client/clientId");
   Product.find({"seller":clientId},(err,products)=>{
+    //console.log(products);
     if (err){
         console.log(Date() + "-"+err);
         res.sendStatus(500);
     }else{
+        //console.log(clientId);
+        //console.log(products);
+        
         res.send(products.map((product)=>{
             return product.cleanup();
         }));
@@ -19,7 +23,7 @@ module.exports.findproductsbyclient = function findproductsbyclient(req, res, ne
 
 module.exports.deleteAllClientProducts = function deleteAllClientProducts(req, res, next) {
   var clientId = req.id.value;
-  console.log(Date() + " - DELETE a /products/client/{id}");
+  //console.log(Date() + " - DELETE a /products/client/{id}");
   Product.deleteMany({ "seller": clientId },(err, products) => {
       if (err) {
         console.log(Date() + "-"+err);

@@ -43,9 +43,9 @@ oasTools.initialize(oasDoc, app, function() {
 dbConnect().then( () => {
       app.listen(port);
       console.log("server ready");
-  /*},
+  },
   err => {
-      console.log("Connection error: "+err);*/
+      console.log("Connection error: "+err);
 });
 
 app.get('/info', (req, res) => {

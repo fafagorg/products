@@ -162,7 +162,7 @@ paths:
   '/products/client/{id}':
     get:
       description: Returns all products of a client
-      operationId: find products by client
+      operationId: findproductsbyclient
       parameters:
         - name: id
           in: path
