@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  auth_mongo:
+    container_name: fafago-products-mongo
+    image: 'mongo'
+    ports:
+      - "27017:27017"
+    networks:
+      auth_network:
+        aliases:
+          - mongoproducts
+    volumes:
+      - 'auth_mongo_volume:/data/db'
+    mem_limit: 1000m
+    restart: 'unless-stopped'
+volumes:
+  auth_mongo_volume: null
