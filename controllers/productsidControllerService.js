@@ -15,7 +15,7 @@ module.exports.findproductbyid = function findproductbyid(req, res, next) {
     }
 });
 };
-
+//
 //OJO, SI HAY VARIOS PRODUCTOS CON EL MISMO ID, SÓLO BORRA UNO. NO DEBERÍA PASAR, PQ SOLO DEBERIA HABER UN PRODUCTO POR ID
 module.exports.deleteProduct = function deleteProduct(req, res, next) {
   var productId = req.id.value;
