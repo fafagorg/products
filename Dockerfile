@@ -7,8 +7,8 @@ COPY package-lock.json .
 
 RUN npm install
 
-COPY index.js .
+COPY . .
 
-#EXPOSE 3000
+EXPOSE 8080
 
 CMD npm start
