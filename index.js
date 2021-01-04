@@ -6,7 +6,7 @@ var fs = require('fs'),
 
 var express = require("express");
 var app = express();
-var port = 8080;
+var port = (process.env.PORT || 8080);
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const dbConnect = require('./db');

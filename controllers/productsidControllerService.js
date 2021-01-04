@@ -4,12 +4,12 @@ const Product = require('../products');
 module.exports.findproductbyid = function findproductbyid(req, res, next) {
   var productId = req.id.value;
   console.log(Date() + " - GET a /products/productId");
-  Product.find({},(err,products)=>{
+  Product.find({"id":productId},(err,products)=>{
     if (err){
         console.log(Date() + "-"+err);
         res.sendStatus(500);
     }else{
-      res.send(products.filter(p => p.id == productId).map((product)=>{
+        res.send(products.map((product)=>{
             return product.cleanup();
         }));
     }

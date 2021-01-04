@@ -83,8 +83,8 @@ describe("Products API", () => {
         
         beforeAll(() => {
             const products = [
-                new Product({"name":"productX","category":"sports","price":1,"seller":1,"id":1}),
-                new Product({"name":"productY","category":"clothes","price":2,"seller":2, "id":2})
+                new Product({"name":"productA","category":"sports","price":1,"seller": 1 ,"id":1}),
+                new Product({"name":"productB","category":"clothes","price":2,"seller": 2 , "id":2})
             ];
     
             dbFind = jest.spyOn(Product, "find");
@@ -112,10 +112,10 @@ describe("Products API", () => {
                 new Product({"name":"productY","category":"clothes","price":2,"seller":2, "id":2})
             ];
     
-            //dbFind = jest.spyOn(Product, "findproductsbyclient");
-            //dbFind.mockImplementation((query, callback) => {
-            //    callback(null,products);
-            //});
+            dbFind = jest.spyOn(Product, "find");
+            dbFind.mockImplementation((query, callback) => {
+                callback(null,products);
+            });
         });
     
         it("Should delete all products of the client given in the URL and return only the remaining products of other clients", () => {
@@ -124,7 +124,7 @@ describe("Products API", () => {
                 expect(response.status).toBe(200);
                 expect(response.text).toEqual(expect.stringContaining("Productos del cliente eliminado con éxito!"));
                 //expect(response.body).toBeArrayOfSize(1);
-                //expect(dbFind).toBeCalledWith({},expect.any(Function));
+                expect(dbFind).toBeCalledWith({},expect.any(Function));
             });
         });
     });

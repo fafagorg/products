@@ -5,7 +5,7 @@ module.exports.findproductsbyclient = function findproductsbyclient(req, res, ne
   var clientId = req.id.value;
   //console.log(req);
   console.log(Date() + " - GET a /products/client/clientId");
-  Product.find({},(err,products)=>{
+  Product.find({"seller":clientId},(err,products)=>{
     //console.log(products);
     if (err){
         console.log(Date() + "-"+err);
@@ -14,7 +14,7 @@ module.exports.findproductsbyclient = function findproductsbyclient(req, res, ne
         //console.log(clientId);
         //console.log(products);
         
-        res.send(products.filter(p => p.seller == clientId).map((product)=>{
+        res.send(products.map((product)=>{
             return product.cleanup();
         }));
     }
