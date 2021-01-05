@@ -45,6 +45,8 @@ dbConnect().then( () => {
       console.log("server ready");
   },
   err => {
+      console.log("SERVER PORT: " + port);
+      console.log("DB URL" + DB_URL);
       console.log("Connection error: "+err);
 });
 
