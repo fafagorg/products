@@ -3,7 +3,7 @@ version: "3.8"
 services:
   products:
     container_name: productsapi_devcontainer
-    image: 'productsapi'
+    image: 'fafagoproducts/productsapi:latest'
     environment:
       - NODE_ENV=production
       - PORT=80
