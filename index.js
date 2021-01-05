@@ -179,3 +179,4 @@ app.put("/products/:productId", (req, res) => {
 */
 
 module.exports = app;
+module.exports = port;

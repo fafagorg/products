@@ -9,6 +9,9 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8080
+#EXPOSE 8080
+ARG PORT=8080
+ENV PORT $PORT
+EXPOSE $PORT
 
 CMD npm start

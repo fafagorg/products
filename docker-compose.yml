@@ -1,8 +1,23 @@
 version: "3.8"
 
 services:
-  auth_mongo:
-    container_name: fafago-products-mongo
+  products:
+    container_name: productsapi_devcontainer
+    image: 'productsapi'
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=${MONGO_DB}
+    ports:
+      - "8080:8080"
+    networks:
+      - products_network
+    mem_limit: 500m
+    restart: 'unless-stopped'
+
+  products_mongo:
+    container_name: productsapi_devcontainer
     image: 'mongo'
     ports:
       - "27017:27017"
@@ -11,8 +26,12 @@ services:
         aliases:
           - mongoproducts
     volumes:
-      - 'auth_mongo_volume:/data/db'
+      - 'productsapi_devcontainer_mongodb-data/_data'
     mem_limit: 1000m
     restart: 'unless-stopped'
+
+networks:
+  products_network: null
+
 volumes:
-  auth_mongo_volume: null
+  productsapi_devcontainer_mongodb-data: null
