@@ -6,11 +6,11 @@ services:
     image: 'productsapi'
     environment:
       - NODE_ENV=production
-      - PORT=8080
+      - PORT=80
       - MONGO_PORT=${MONGO_PORT}
       - MONGO_DB=${MONGO_DB}
     ports:
-      - "8080:8080"
+      - "80:80"
     networks:
       - products_network
     mem_limit: 500m
@@ -19,10 +19,10 @@ services:
   products_mongo:
     container_name: productsapi_devcontainer
     image: 'mongo'
-    ports:
-      - "27017:27017"
+    #ports:
+    #  - "27017:27017"
     networks:
-      auth_network:
+      products_network:
         aliases:
           - mongoproducts
     volumes:
