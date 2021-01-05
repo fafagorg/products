@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   products:
-    container_name: productsapi_devcontainer
+    container_name: productsapi-devcontainer
     image: 'fafagoproducts/productsapi:latest'
     environment:
       - NODE_ENV=production
@@ -17,7 +17,7 @@ services:
     restart: 'unless-stopped'
 
   products_mongo:
-    container_name: productsapi_devcontainer
+    container_name: productsapi-mongo
     image: 'mongo'
     #ports:
     #  - "27017:27017"
@@ -26,7 +26,7 @@ services:
         aliases:
           - mongoproducts
     volumes:
-      - 'productsapi_devcontainer_mongodb-data/_data'
+      - 'products_mongo_volume:/data/db'
     mem_limit: 1000m
     restart: 'unless-stopped'
 
