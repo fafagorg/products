@@ -34,4 +34,4 @@ networks:
   products_network: null
 
 volumes:
-  productsapi_devcontainer_mongodb-data: null
+  products_mongo_volume: null
