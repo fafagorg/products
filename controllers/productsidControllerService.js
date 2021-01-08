@@ -28,8 +28,9 @@ module.exports.deleteProduct = function deleteProduct(req, res, next) {
           res.sendStatus(404);
       }
       else {
-        res.send("Producto eliminado con éxito!")
+        //res.send("Producto eliminado con éxito!")
         //res.sendStatus(200);
+        res.status(200).send('Producto eliminado con éxito!');
       }
   });
 };
@@ -43,7 +44,7 @@ module.exports.editProduct = function editProduct(req, res, next) {
   if (updatedProduct.length > 5 || updatedProduct.id != productId || updatedProduct["id"] == null 
     || updatedProduct["price"] == null || updatedProduct["seller"] == null || updatedProduct["category"] == null 
     || updatedProduct["name"] == null) {
-  res.sendStatus(400);
+  res.status(409).send("Conflicto al editar el producto. Revisa los parámetros");
   return;
   }    
             
@@ -53,8 +54,9 @@ module.exports.editProduct = function editProduct(req, res, next) {
     res.sendStatus(500);
     return;
   }else {
-    console.log("editado con exito")
-    res.sendStatus(200);
+    //console.log("editado con exito")
+    //res.sendStatus(200);
+    res.status(200).send('Producto con id: ' + productId + ' editado con éxito!');
   }
   });
 };

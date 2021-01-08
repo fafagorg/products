@@ -32,8 +32,9 @@ module.exports.deleteAllClientProducts = function deleteAllClientProducts(req, r
           res.sendStatus(404);
       }
       else {
-        res.send("Productos del cliente eliminado con éxito!")
+        //res.send("Productos del cliente eliminado con éxito!")
         //res.sendStatus(200);
+        res.status(200).send('Productos del cliente: ' + clientId + ' eliminado con éxito!');
       }
   });
 };

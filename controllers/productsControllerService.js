@@ -23,8 +23,9 @@ module.exports.addProduct = function addProduct(req, res, next) {
           console.log(Date() + "-"+err);
           res.sendStatus(500);
       }else{
-        res.send("Producto creado con éxito!");
+        //res.send("Producto creado con éxito!");
         //res.sendStatus(201);
+        res.status(201).send('Producto creado con éxito!');
       }
   });
 };
