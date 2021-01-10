@@ -15,7 +15,7 @@ var oasTools = require('oas-tools');
 var jsyaml = require('js-yaml');
 const Product = require('./products');
 const { update } = require('./products');
-const { env } = require('process');
+//const { env } = require('process');
 
 var spec = fs.readFileSync(path.join(__dirname, '/api/oas-doc.yaml'), 'utf8');
 var oasDoc = jsyaml.safeLoad(spec);
@@ -41,7 +41,7 @@ oasTools.initialize(oasDoc, app, function() {
   });*/
 });
 
-dbConnect().then( (env) => {
+dbConnect().then( () => {
       app.listen(port);
       console.log("server ready");
   },
@@ -182,4 +182,4 @@ app.put("/products/:productId", (req, res) => {
 */
 
 module.exports = app;
-module.exports = port;
+//module.exports = port;
