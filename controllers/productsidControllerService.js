@@ -1,5 +1,6 @@
 'use strict'
 const Product = require('../products');
+const commons = require("../commons");
 
 module.exports.findproductbyid = function findproductbyid(req, res, next) {
   var productId = req.id.value;
@@ -9,8 +10,11 @@ module.exports.findproductbyid = function findproductbyid(req, res, next) {
         console.log(Date() + "-"+err);
         res.sendStatus(500);
     }else{
+      let reviews = commons.reviewProduct(productId);
       res.send(products.filter(p => p.id == productId).map((product)=>{
-            return product.cleanup();
+          let p = product.cleanup();
+          p.reviews = reviews
+          return p;
         }));
     }
 });

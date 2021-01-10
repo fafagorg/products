@@ -1,5 +1,6 @@
 'use strict'
 const Product = require('../products');
+const commons = require("../commons");
 
 module.exports.findproductsbyclient = function findproductsbyclient(req, res, next) {
   var clientId = req.id.value;
@@ -23,6 +24,22 @@ module.exports.findproductsbyclient = function findproductsbyclient(req, res, ne
 
 module.exports.deleteAllClientProducts = function deleteAllClientProducts(req, res, next) {
   var clientId = req.id.value;
+
+  /*if (!req.headers.authorization || req.headers.authorization == undefined) {
+    next(new Error("Authentication error"));
+  }
+
+  try {
+    let token = req.headers.authorization.replace('Bearer ', '');
+    let decoded = await commons.decodedJWT(token)
+    req.decoded = decoded;
+    req.decoded.token = token;
+    next();
+  } catch (error) {
+    console.log(error.response.data)
+    return res.sendStatus(403);
+  }*/
+
   //console.log(Date() + " - DELETE a /products/client/{id}");
   Product.deleteMany({ "seller": clientId },(err, products) => {
       if (err) {
