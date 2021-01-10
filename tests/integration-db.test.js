@@ -14,7 +14,7 @@ describe('Products DB connection', () => {
     });
 
     it('insert a product in the DB', (done) => {
-        const product = new Product({name: 'productX', category: 'sports', price: 8, seller: 1});
+        const product = new Product({name: 'productX', category: 'sports', price: 8, seller: 1, id: 1});
         product.save((err, product) => {
             expect(err).toBeNull();
             Product.find({}, (err, products) => {

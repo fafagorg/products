@@ -41,7 +41,7 @@ module.exports.editProduct = function editProduct(req, res, next) {
   console.log(Date() + " - PUT a /products/{id}");     
 
   //COMPROBACIONES
-  if (updatedProduct.length > 5 || updatedProduct.id != productId || updatedProduct["id"] == null 
+  if (updatedProduct.id != productId || updatedProduct["id"] == null 
     || updatedProduct["price"] == null || updatedProduct["seller"] == null || updatedProduct["category"] == null 
     || updatedProduct["name"] == null) {
   res.status(409).send("Conflicto al editar el producto. Revisa los parámetros");
@@ -56,7 +56,7 @@ module.exports.editProduct = function editProduct(req, res, next) {
   }else {
     //console.log("editado con exito")
     //res.sendStatus(200);
-    res.status(200).send('Producto con id: ' + productId + ' editado con éxito!');
+    res.sendStatus(200);
   }
   });
 };

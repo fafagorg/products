@@ -198,8 +198,9 @@ describe("Products API", () => {
             return request(app).put('/api/products/1').send(product).then((response) => {
                 //console.log(response);
                 expect(response.status).toBe(200);
+                //expect(dbFind).toBeCalledWith(product, expect.any(Function));
                 return request(app).get('/api/products/1').then((res) => {
-                    expect(res.body).toBeArrayOfSize(2);
+                    expect(res.body).toBeArrayOfSize(1);
                 });
             });
             

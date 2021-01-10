@@ -1,11 +1,28 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
-    name:String,
-    category:String,
-    price: Number,
-    seller: Number, //id del vendedor
-    id: Number
+
+    name: {
+        type: String,
+        required: true
+      },
+    category: {
+        type: String,
+        required: true
+      },
+    price: {
+        type: String,
+        required: true
+      },
+    seller: {
+        type: Number,
+        required: true
+      },
+    id: {
+        type: Number,
+        required: true,
+        unique: true
+      }
 });
 
 productSchema.methods.cleanup = function(){
