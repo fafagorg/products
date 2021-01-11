@@ -102,6 +102,16 @@ describe("Products API", () => {
             });
             
         });
+
+        it("Should return a 404 Not Found if the ID of the client given in the URL doesn't exist", () => {
+            return request(app).get('/api/products/client/3').then((response) => {
+                //console.log(response);
+                expect(response.status).toBe(404);
+                //expect(response.body).toBeArrayOfSize(1);
+                expect(dbFind).toBeCalledWith({}, expect.any(Function));
+            });
+            
+        });
     });
 
     describe("DELETE /products/client/{id}", () => {

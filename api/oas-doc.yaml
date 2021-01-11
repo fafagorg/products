@@ -14,7 +14,7 @@ info:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-  - url: 'http://productstore.swagger.io/api'
+  - url: 'http://productstore.swagger.io/api/v1'
 paths:
   /products:
     get:
@@ -232,8 +232,7 @@ components:
           type: integer
           format: int64
         seller:
-          type: integer
-          format: int64
+          type: string
         id:
           type: integer
           format: int64
