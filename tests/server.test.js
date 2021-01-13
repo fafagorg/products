@@ -84,7 +84,7 @@ describe("Products API", () => {
         });
     
         it("Should return the products of the client given in the URL", () => {
-            return request(server.app).get('/api/products/client/2').then((response) => {
+            return request(server.app).get('/api/v1/products/client/2').then((response) => {
                 //console.log(response);
                 expect(response.status).toBe(200);
                 expect(response.body).toBeArrayOfSize(1);
@@ -158,14 +158,14 @@ describe("Products API", () => {
         
         beforeAll(() => {
             const products = [
-                new Product({"name":"productX","category":"sports","price":1,"seller":1,"id":1}),
-                new Product({"name":"productY","category":"clothes","price":2,"seller":2, "id":2})
+                new Product({"name":"productX","category":"sports","price":1,"seller":"1","id":1}),
+                new Product({"name":"productY","category":"clothes","price":2,"seller":"2", "id":2})
             ];
     
-            //dbFind = jest.spyOn(Product, "findproductsbyclient");
-            //dbFind.mockImplementation((query, callback) => {
-            //    callback(null,products);
-            //});
+            /*dbFind = jest.spyOn(Product, "delete");
+            dbFind.mockImplementation((query, callback) => {
+                callback(null,products);
+            });*/
         });
     
         it("Should delete the product given in the URL", () => {
@@ -183,8 +183,8 @@ describe("Products API", () => {
         
         beforeAll(() => {
             const products = [
-                new Product({"name":"productX","category":"sports","price":1,"seller":1,"id":1}),
-                new Product({"name":"productY","category":"clothes","price":2,"seller":2, "id":2})
+                new Product({"name":"productX","category":"sports","price":1,"seller":"1","id":1}),
+                new Product({"name":"productY","category":"clothes","price":2,"seller":"2", "id":2})
             ];
     
             dbFind = jest.spyOn(Product, "update");
@@ -194,19 +194,24 @@ describe("Products API", () => {
         });
     
         it("Should edit the product with the id given in the URL", () => {
-            const product = {"name":"productX","category":"games","price":1,"seller":1,"id":1};
+            const product = {"name":"productX","category":"games","price":1,"seller":"1","id":1};
             return request(server.app).put('/api/v1/products/1').send(product).then((response) => {
                 //console.log(response);
                 expect(response.status).toBe(200);
                 //expect(dbFind).toBeCalledWith(product, expect.any(Function));
-                return request(server.app).get('/api/products/1').then((res) => {
+                return request(server.app).get('/api/v1/products/1').then((res) => {
                     expect(res.body).toBeArrayOfSize(1);
                 });
             });
             
         });
     });
+    
 });
+/*afterAll(() => {
+    process.exit(0);
+})*/
+
 /*afterAll(()=>{
     //console.log(app);
     server.undeploy();

@@ -4,7 +4,7 @@ const Product = require('../products');
 module.exports.findProducts = function findProducts(req, res, next) {
     /*var limit = parseInt(req.query.limit);
     var offset = parseInt(req.query.offset);*/
-    console.log(req)
+    //console.log(req)
     
     var min_price = req.min_price.value;
     var max_price = req.max_price.value;
@@ -25,7 +25,7 @@ module.exports.findProducts = function findProducts(req, res, next) {
                 }))
               }
               else{
-                res.send("La búsqueda no devuelve resultados")
+                res.status(404).send("not found");
               }
           }
           else if (keyWord != undefined){
@@ -37,7 +37,7 @@ module.exports.findProducts = function findProducts(req, res, next) {
                 }))
               }
               else{
-                res.send("La búsqueda no devuelve resultados")
+                res.status(404).send("not found");
               }
           }
           else if (productCategory != undefined){
@@ -49,7 +49,7 @@ module.exports.findProducts = function findProducts(req, res, next) {
                 }))
               }
               else{
-                res.send("La búsqueda no devuelve resultados")
+                res.status(404).send("not found");
               }
           }
           else if (min_price && max_price){
@@ -61,7 +61,7 @@ module.exports.findProducts = function findProducts(req, res, next) {
                 }))
               }
               else{
-                res.send("La búsqueda no devuelve resultados")
+                res.status(404).send("not found");
               }
           }
           else if (min_price != undefined){
@@ -73,7 +73,7 @@ module.exports.findProducts = function findProducts(req, res, next) {
                 }))
               }
               else{
-                res.send("La búsqueda no devuelve resultados")
+                res.status(404).send("not found");
               }
           }
           else if (max_price != undefined){
@@ -85,14 +85,18 @@ module.exports.findProducts = function findProducts(req, res, next) {
                 }))
               }
               else{
-                res.send("La búsqueda no devuelve resultados")
+                res.status(404).send("not found");
               }
           }
           else{
             console.log("NO PARAMS")
-            res.send(products.map((product)=>{
-              return product.cleanup();
-            }))
+            if(products.length > 0){
+              res.send(products.map((product)=>{
+                return product.cleanup();
+              }))
+            }else{
+              res.status(404).send("There aren't products in the store");
+            }
           };
       }
   });

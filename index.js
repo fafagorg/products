@@ -28,6 +28,8 @@ var options_object = {
   validator: true
 };
 
+var server;
+
 oasTools.configure(options_object);
 
 oasTools.initialize(oasDoc, app, function() {
@@ -42,8 +44,8 @@ oasTools.initialize(oasDoc, app, function() {
 });
 
 dbConnect().then( () => {
-      app.listen(port);
-      console.log("server ready");
+      server = app.listen(port);
+      console.log("server ready");     
   },
   err => {
       console.log("SERVER PORT: " + port);
@@ -180,14 +182,13 @@ app.put("/products/:productId", (req, res) => {
         
         });
 */
-const undeploy = () => {
-  console.log("turning off server")
-  //process.exit(0);
-};
+
 
 module.exports = {
-  undeploy: undeploy,
-  app: app
+  //undeploy: undeploy,
+  app: app,
+  //close: close,
+  //stop: stop
 };
 //module.exports = app;
 //module.exports = port;

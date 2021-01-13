@@ -14,10 +14,15 @@ module.exports.findproductsbyclient = function findproductsbyclient(req, res, ne
     }else{
         //console.log(clientId);
         //console.log(products);
-        
-        res.send(products.filter(p => p.seller == clientId).map((product)=>{
+        var r = products.filter(p => p.seller == clientId);
+        if (r.length > 0){
+          res.send(r.map((product)=>{
             return product.cleanup();
-        }));
+          }));
+        }else{
+          res.status(404).send("not found");
+        }
+        
     }
 });
 };
