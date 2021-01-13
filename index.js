@@ -181,11 +181,13 @@ app.put("/products/:productId", (req, res) => {
         });
 */
 const undeploy = () => {
-  process.exit();
+  console.log("turning off server")
+  //process.exit(0);
 };
 
 module.exports = {
-  undeploy: undeploy
+  undeploy: undeploy,
+  app: app
 };
-module.exports = app;
+//module.exports = app;
 //module.exports = port;
