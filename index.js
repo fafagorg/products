@@ -180,6 +180,12 @@ app.put("/products/:productId", (req, res) => {
         
         });
 */
+const undeploy = () => {
+  process.exit();
+};
 
+module.exports = {
+  undeploy: undeploy
+};
 module.exports = app;
 //module.exports = port;

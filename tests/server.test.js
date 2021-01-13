@@ -2,16 +2,6 @@ const app = require("../index.js");
 const Product = require('../products.js');
 const request = require('supertest');
 
-describe("Hello World tests", () => {
-    it("Should do an stupid test", () => {
-        const a = 5;
-        const b = 3;
-        const sum = a + b;
-
-        expect(sum).toBe(8);
-    });
-});
-
 describe("Products API", () => {
     describe("GET /", () => {
         it("Should return an HTML document", () => {
@@ -215,5 +205,9 @@ describe("Products API", () => {
             });
             
         });
+
+        afterAll(()=>{
+            app.undeploy();
+        })
     });
 });
