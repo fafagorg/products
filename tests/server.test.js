@@ -87,16 +87,22 @@ function apiDBControllersTest() {
             });
         });
 
-        /*it("Should return 500 if there is a problem with de DB", () => {
+        it("Should return 500 if there is a problem with de DB", () => {
             //const product = { "name": "productX", "category": "sports", "price": 1, "seller": "1" };
             dbInsert.mockImplementation((c, callback) => {
                 callback(true);
             });
 
             return axios.post(baseURL + "/api/v1/products", product).then((response) => {
-                expect(response.status).toBe(500);
+                console.log(response);
+          
+            }).catch((err) => {
+                console.log(err);
+                expect(err.response.status).toBe(406);
+                //done(err);
+            
             });
-        });*/
+        });
     });
 
     describe("GET /products/client/{id}", () => {
@@ -123,15 +129,18 @@ function apiDBControllersTest() {
 
         });
 
-        /*it("Should return a 404 Not Found if the ID of the client given in the URL doesn't exist", () => {
+        it("Should return a 404 Not Found if the ID of the client given in the URL doesn't exist", () => {
             return axios.get(baseURL + '/api/v1/products/client/3').then((response) => {
                 console.log(response);
-                expect(response.status).toBe(404);
-                //expect(response.body).toBeArrayOfSize(1);
-                expect(dbFind).toBeCalledWith({}, expect.any(Function));
-            });
 
-        });*/
+            
+            }).catch((err) => {
+                //console.log(err);
+                expect(err.response.status).toBe(404);
+                //done(err);
+            });           
+
+        });
     });
 
     describe("DELETE /products/client/{id}", () => {
@@ -230,7 +239,7 @@ function apiDBControllersTest() {
                 expect(response.status).toBe(200);
                 //expect(dbFind).toBeCalledWith(product, expect.any(Function));
                 return axios.get(baseURL + '/api/v1/products/1').then((res) => {
-                    console.log(res.data);
+                    //console.log(res.data);
                     expect(res.data).toBeArrayOfSize(1);
                 });
             });
