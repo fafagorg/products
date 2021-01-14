@@ -1,11 +1,37 @@
-const server = require("../index.js");
+const server = require("../server.js");
 const Product = require('../products.js');
 const request = require('supertest');
+const assert = require('assert');
+const axios = require('axios');
+const { compare } = require('bcrypt');
+const { response } = require('express');
 
-describe("Products API", () => {
+describe('Tests array', function () {
+    beforeAll((done) => {
+      server.deploy('test').then(() => {
+              done();
+        })
+        .catch((err) => {
+          console.log(err.message);
+          done(err);
+        });
+    });
+  
+    // Delete this when tests are created
+    describe('#apiDBControllersTest()', function () {
+      apiDBControllersTest();
+    });
+    
+    afterAll((done) => {
+      server.undeploy(done);
+    });
+  });
+  
+function apiDBControllersTest(){
+    describe("Products API", () => {
     describe("GET /", () => {
         it("Should return an HTML document", () => {
-            return request(server.app).get("/").then((response) => {
+            return request(server).get("/").then((response) => {
                 expect(response.status).toBe(200);
                 //console.log(response.type);
                 expect(response.type).toEqual(expect.stringContaining("html"));
@@ -206,13 +232,5 @@ describe("Products API", () => {
             
         });
     });
-    
 });
-/*afterAll(() => {
-    process.exit(0);
-})*/
-
-/*afterAll(()=>{
-    //console.log(app);
-    server.undeploy();
-})*/
+}
