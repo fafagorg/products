@@ -10,13 +10,19 @@ module.exports.findproductbyid = function findproductbyid(req, res, next) {
         console.log(Date() + "-"+err);
         res.sendStatus(500);
     }else{
-      //let reviews = commons.reviewProduct(productId);
-      res.send(products.filter(p => p.id == productId).map((product)=>{
+      var r = products.filter(p => p.id == productId);
+      if (r.length > 0){
+        res.send(r.map((product)=>{
           /*let p = product.cleanup();
           p.reviews = reviews
           return p;*/
           return product.cleanup();
         }));
+      }else{
+        res.status(404).send("not found");
+      }
+      //let reviews = commons.reviewProduct(productId);
+      
     }
 });
 };
