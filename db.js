@@ -24,7 +24,7 @@ if (MONGO_PORT && MONGO_DB) {
 const dbConnect = function(){
     const db = mongoose.connection;
     db.on('error', console.error.bind(console,'connection error: '));
-    return mongoose.connect(DB_URL,{useNewUrlParser: true});
+    return mongoose.connect(DB_URL,options);
 }
 
 module.exports = dbConnect;
