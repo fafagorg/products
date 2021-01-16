@@ -46,7 +46,10 @@ module.exports.deleteAllClientProducts = function deleteAllClientProducts(req, r
   }*/
 
   //console.log(Date() + " - DELETE a /products/client/{id}");
-  Product.deleteMany({ "seller": clientId },(err, products) => {
+
+  //"seller": clientId
+
+  Product.deleteMany({  },(err, products) => {
       if (err) {
         console.log(Date() + "-"+err);
       }
