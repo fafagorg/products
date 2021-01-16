@@ -28,7 +28,7 @@ module.exports.findproductsbyclient = function findproductsbyclient(req, res, ne
 };
 
 module.exports.deleteAllClientProducts = function deleteAllClientProducts(req, res, next) {
-  var clientId = req.id.value;
+  var clientId = req.id.value.toString();
 
   /*if (!req.headers.authorization || req.headers.authorization == undefined) {
     next(new Error("Authentication error"));
