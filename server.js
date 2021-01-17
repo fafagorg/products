@@ -8,7 +8,9 @@ const deploy = (env) => {
         const http = require('http');
         const path = require('path');
         const express = require("express");
+        const cors = require("cors");
         const app = express();
+        app.use(cors());
         const bodyParser = require('body-parser');
         app.use(bodyParser.json({
             strict: false
