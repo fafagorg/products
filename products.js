@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema({
 });
 
 productSchema.methods.cleanup = function(){
-    return {name: this.name, category: this.category, price: this.price, seller: this.seller};
+    return {name: this.name, category: this.category, price: this.price, seller: this.seller, id: this.id};
 }
 
 const Product = mongoose.model('Product',productSchema);
