@@ -1,4 +1,8 @@
 'use strict'
+const { v4: uuidv4 } = require('uuid');
+
+const ExchangeResource = require('../resources/exchangeResource.js')
+
 const Product = require('../products');
 
 module.exports.findProducts = function findProducts(req, res, next) {
@@ -11,7 +15,40 @@ module.exports.findProducts = function findProducts(req, res, next) {
     var keyWord = req.keyWord.value;
     var productCategory = req.productCategory.value;
     //console.log("AAAAAAAAAAAAAAA: " + min_price + max_price + keyWord + productCategory);
+
+    /*module.exports.addReview = function addReview(req, res, headers, next) {
+      AuthResource.auth(headers.authorization).then((body) => {
+        var keys = []
+        for (var key in req.review.value) {
+          keys.push(key);
+        }
+        if (keys.length === 0) {
+          return res.status(400).send(getResponse(400, "Request body is missing."));
+        }
+        var review = new ReviewModel(req.review.value);
+        review.id = uuidv4();
+        review.dateCreated = new Date().toISOString();
+        ReviewModel.create(review)
+          .then(doc => {
+            if (!doc || doc.length === 0) {
+              return res.status(500).send(getResponse(500, "Unexpected error."));
+            }
+            res.status(201).send(getResponse(201, "Review created successfully."));
+          })
+          .catch(err => {
+            res.status(500).send(getResponse(500, err));
+          })
+      }).catch((error) => {
+        res.status(500).send(getResponse(500, error.error.err));
+      });
+    };*/
+
     Product.find({},(err,products)=>{
+      ExchangeResource.requestExchange().then((response) =>{
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA");
+        var divisas = response.rates.USD;
+        console.log(divisas);
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA");
       if (err){
           console.log(Date() + "-"+err);
           res.sendStatus(500);
@@ -100,6 +137,7 @@ module.exports.findProducts = function findProducts(req, res, next) {
           };
       }
   });
+});
 };
 
 module.exports.addProduct = function addProduct(req, res, next) {
