@@ -87,6 +87,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /rates:
+    get:
+      description: |
+        Returns the exchange rates
+      operationId: getRates
+      responses:
+        '200':
+          description: rates response
+          content:
+            application/json:
+              schema:
+                type: array
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/products/{id}':
     get:
       description: Returns a product based on a single ID
