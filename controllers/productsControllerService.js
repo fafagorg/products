@@ -2,8 +2,10 @@
 const { v4: uuidv4 } = require('uuid');
 
 const ExchangeResource = require('../resources/exchangeResource.js')
+const AuthResource = require('../resources/authResource.js')
 
 const Product = require('../products');
+const { response } = require('express');
 
 module.exports.findProducts = function findProducts(req, res, next) {
     
@@ -49,16 +51,30 @@ module.exports.findProducts = function findProducts(req, res, next) {
 
 module.exports.addProduct = function addProduct(req, res, next) {
   var product = req.undefined.value;
-  //console.log(req.undefined.value);
-  //comprobacion de errores
-  Product.create(product,(err)=>{
-      if (err){
-          console.log(Date() + "-"+err);
-          res.sendStatus(500);
-      }else{
-        //res.send("Producto creado con éxito!");
-        //res.sendStatus(201);
-        res.status(201).send('Producto creado con éxito!');
-      }
-  });
+  var userId = product.seller;
+  //req.headers
+  //console.log(res.req);
+  var token = res.req.headers.authorization;
+  AuthResource.auth(token).then( (response)=>{
+
+    console.log(userId);
+    console.log(response);
+
+    if (response.userId == userId){
+      console.log(response)
+
+      Product.create(product,(err)=>{
+        if (err){
+            console.log(Date() + "-"+err);
+            res.sendStatus(500);
+        }else{
+          res.status(201).send('Producto creado con éxito!');
+        }
+    });  
+
+    }else{
+      res.status(409).send('You cannot add a product assigned to a different seller than the logged account');
+    }
+  })
+  
 };
