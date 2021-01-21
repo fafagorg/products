@@ -68,8 +68,8 @@ function apiDBControllersTest() {
 
     describe("POST /products", () => {
         let dbInsert;
-        const product = { "name": "productX", "category": "sports", "price": 1, "seller": "1" };
-
+        const product = { "name": "productX", "category": "sports", "price": 1, "seller": "1","id": 50 };
+        
         beforeEach(() => {
             dbInsert = jest.spyOn(Product, "create");
         });

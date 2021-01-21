@@ -54,7 +54,7 @@ module.exports.addProduct = function addProduct(req, res, next) {
   var userId = product.seller;
   //req.headers
   //console.log(res.req);
-  var token = res.req.headers.authorization;
+  var token = res.req.headers.authorization.replace('Bearer ', '');
   AuthResource.auth(token).then( (response)=>{
     //console.log(userId);
     //console.log(resp

@@ -33,7 +33,7 @@ module.exports.deleteAllClientProducts = function deleteAllClientProducts(req, r
   var clientId = req.id.value.toString();
   console.log(clientId)
 
-  var token = res.req.headers.authorization;
+  var token = res.req.headers.authorization.replace('Bearer ', '');
   AuthResource.auth(token).then( (response)=>{
     console.log(response.userId);
     if (response.userId == clientId){
