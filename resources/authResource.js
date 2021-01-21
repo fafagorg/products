@@ -5,7 +5,7 @@ const prefix = "[AUTH_RESOURCE] ";
 
 class AuthResource {
     static authUrl(resourceUrl) {
-        const authServer = (process.env.AUTH_URL || 'http://51.103.75.211/api/v1');
+        const authServer = (process.env.HOST_AUTH || 'http://51.103.75.211/api/v1');
         return urljoin(authServer, resourceUrl);
     }
 

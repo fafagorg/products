@@ -56,13 +56,10 @@ module.exports.addProduct = function addProduct(req, res, next) {
   //console.log(res.req);
   var token = res.req.headers.authorization;
   AuthResource.auth(token).then( (response)=>{
-
-    console.log(userId);
-    console.log(response);
-
+    //console.log(userId);
+    //console.log(resp
     if (response.userId == userId){
-      console.log(response)
-
+      //console.log(response)
       Product.create(product,(err)=>{
         if (err){
             console.log(Date() + "-"+err);
