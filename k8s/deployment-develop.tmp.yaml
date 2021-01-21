@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-$BRANCH_NAME
+  namespace: app
+  labels:
+    app: products-$BRANCH_NAME
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: products-$BRANCH_NAME
+  template:
+    metadata:
+      labels:
+        app: products-$BRANCH_NAME
+    spec:
+      containers:
+      - name: products
+        image: $DOCKER_IMAGES
+        ports:
+        - containerPort: 8080
+        env:
+          - name: NODE_ENV
+            value: production
+          - name: PORT
+            value: "8080"
+          - name: HOST_AUTH
+            value: http://10.0.3.134:80
+          - name: HOST_REVIEWS
+            value: http://10.0.10.218:80
+      - name: mongo
+        image: mongo:4.4.3-bionic
+        ports:
+        - containerPort: 27017
