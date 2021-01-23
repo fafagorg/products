@@ -40,7 +40,7 @@ module.exports.deleteProduct = function deleteProduct(req, res, next) {
           var seller = products[0].seller;
           AuthResource.auth(token).then( (response, error)=>{
             console.log(response.userId)
-                  if (seller === response.userId){      
+                  if (seller == response.userId){      
                     Product.deleteOne({id: productId}, (err, products) => {
                           if (err) {
                             console.log(Date() + "-"+err);
