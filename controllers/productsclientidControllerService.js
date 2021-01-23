@@ -35,7 +35,7 @@ module.exports.deleteAllClientProducts = function deleteAllClientProducts(req, r
 
   var token = res.req.headers.authorization.replace('Bearer ', '');
   AuthResource.auth(token).then( (response)=>{
-    console.log(response.userId);
+    //console.log(response.userId);
     if (response.userId == clientId){
       /*Product.find({},(err,products)=>{
         products.filter(p => p.seller == clientId)*/

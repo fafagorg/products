@@ -21,6 +21,7 @@
     "express": "^4.16.3",
     "js-yaml": "^3.3.0",
     "mongoose": "^5.11.7",
+    "nock": "^13.0.6",
     "oas-tools": "^2.1.4",
     "request-promise-native": "^1.0.9",
     "ts-node": "^9.1.1",

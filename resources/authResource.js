@@ -21,7 +21,6 @@ class AuthResource {
         const options = {
             body: AuthResource.requestBody(jwt)
         }
-
         return request.post(url, options);
     }
 
