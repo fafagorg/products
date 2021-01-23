@@ -57,15 +57,25 @@ module.exports.addProduct = function addProduct(req, res, next) {
   var token = res.req.headers.authorization.replace('Bearer ', '');
   AuthResource.auth(token).then( (response)=>{
     if (response.userId == userId){
-      Product.create(product,(err)=>{
-        if (err){
-            console.log(Date() + "-"+err);
-            res.sendStatus(500);
+      Product.find({},(err,products)=>{
+        if(products === 0){
+          product.id = 1;
         }else{
-          res.status(201).send('Producto creado con éxito!');
+          product.id = Math.max(...products.map(p => {
+            return p.id;
+          })) +1;
         }
-    });  
 
+      
+        Product.create(product,(err)=>{
+          if (err){
+              console.log(Date() + "-"+err);
+              res.sendStatus(500);
+          }else{
+            res.status(201).send('Producto creado con éxito!');
+          }
+      });  
+    })
     }else{
       res.status(409).send('You cannot add a product assigned to a different seller than the logged account');
     }
