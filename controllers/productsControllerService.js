@@ -58,7 +58,7 @@ module.exports.addProduct = function addProduct(req, res, next) {
   AuthResource.auth(token).then( (response)=>{
     if (response.userId == userId){
       Product.find({},(err,products)=>{
-        if(products === 0){
+        if(products.length === 0){
           product.id = 1;
         }else{
           product.id = Math.max(...products.map(p => {
