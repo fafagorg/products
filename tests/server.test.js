@@ -101,7 +101,7 @@ function apiDBControllersTest() {
         })
 
         it("Should add a new contact if everything is fine", () => {
-            product = { "name": "productX", "category": "sports", "price": 1, "seller": "test","id": 50 }
+            product = { "name": "productX", "category": "sports", "price": 1, "seller": "test","id": 3 }
             dbInsert.mockImplementation((c, callback) => {
                 callback(false); //no hay error
             });
