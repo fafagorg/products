@@ -1,119 +1,82 @@
 'use strict'
+const { v4: uuidv4 } = require('uuid');
+
+const ExchangeResource = require('../resources/exchangeResource.js')
+const AuthResource = require('../resources/authResource.js')
+
 const Product = require('../products');
+const { response } = require('express');
 
 module.exports.findProducts = function findProducts(req, res, next) {
-    /*var limit = parseInt(req.query.limit);
-    var offset = parseInt(req.query.offset);*/
-    //console.log(req)
     
     var min_price = req.min_price.value;
     var max_price = req.max_price.value;
     var keyWord = req.keyWord.value;
     var productCategory = req.productCategory.value;
-    //console.log("AAAAAAAAAAAAAAA: " + min_price + max_price + keyWord + productCategory);
+
     Product.find({},(err,products)=>{
       if (err){
           console.log(Date() + "-"+err);
           res.sendStatus(500);
       }else{
-          if (keyWord && productCategory && min_price && max_price){
-              console.log("ALL PARAMS")
-              var r = products.filter(p => p.price >= min_price && p.price <= max_price && p.category == productCategory && p.name.includes(keyWord));
-              if (r.length > 0){
-                res.send(r.map((product)=>{
-                  return product.cleanup();
-                }))
-              }
-              else{
-                res.status(404).send("not found");
-              }
+          var r = products;
+
+          //PARAMS FILTERS
+          if (keyWord){
+              console.log("Keyword");
+            r =  r.filter(p => p.name.includes(keyWord));
           }
-          else if (keyWord != undefined){
-              console.log("ONLY KEYWORD");
-              var r = products.filter(p => p.name.includes(keyWord));
-              if (r.length > 0){
-                res.send(r.map((product)=>{
-                  return product.cleanup();
-                }))
-              }
-              else{
-                res.status(404).send("not found");
-              }
+          if (productCategory){
+            console.log("Category");
+            r = r.filter(p => p.category == productCategory);
           }
-          else if (productCategory != undefined){
-              console.log("ONLY CATEGORY");
-              var r = products.filter(p => p.category == productCategory);
-              if (r.length > 0){
-                res.send(r.map((product)=>{
-                  return product.cleanup();
-                }))
-              }
-              else{
-                res.status(404).send("not found");
-              }
+          if (min_price){
+            console.log("Min Price");
+            r = r.filter(p => p.price >= min_price);
           }
-          else if (min_price && max_price){
-              console.log("BOTH PRICES")
-              var r = products.filter(p => (p.price >= min_price && p.price <= max_price));
-              if (r.length > 0){
-                res.send(r.map((product)=>{
-                  return product.cleanup();
-                }))
-              }
-              else{
-                res.status(404).send("not found");
-              }
+          if (max_price){
+            console.log("Max price");
+            r = r.filter(p => p.price <= max_price);
           }
-          else if (min_price != undefined){
-              console.log("ONLY MIN PRICE");
-              var r = products.filter(p => (p.price >= min_price));
-              if (r.length > 0){
-                res.send(r.map((product)=>{
-                  return product.cleanup();
-                }))
-              }
-              else{
-                res.status(404).send("not found");
-              }
-          }
-          else if (max_price != undefined){
-              console.log("ONLY MAX PRICE");
-              var r = products.filter(p => (p.price <= max_price));
-              if (r.length > 0){
-                res.send(r.map((product)=>{
-                  return product.cleanup();
-                }))
-              }
-              else{
-                res.status(404).send("not found");
-              }
-          }
-          else{
-            console.log("NO PARAMS")
-            if(products.length > 0){
-              res.send(products.map((product)=>{
-                return product.cleanup();
-              }))
-            }else{
-              res.status(404).send("There aren't products in the store");
-            }
-          };
+
+
+          res.send(r.map((product)=>{
+            return product.cleanup();
+          }))
+
       }
-  });
+
+});
 };
+
 
 module.exports.addProduct = function addProduct(req, res, next) {
   var product = req.undefined.value;
-  //console.log(req.undefined.value);
-  //comprobacion de errores
-  Product.create(product,(err)=>{
-      if (err){
-          console.log(Date() + "-"+err);
-          res.sendStatus(500);
-      }else{
-        //res.send("Producto creado con éxito!");
-        //res.sendStatus(201);
-        res.status(201).send('Producto creado con éxito!');
-      }
-  });
+  var userId = product.seller;
+  var token = res.req.headers.authorization.replace('Bearer ', '');
+  AuthResource.auth(token).then( (response)=>{
+    if (response.userId == userId){
+      Product.find({},(err,products)=>{
+        if(products.length === 0){
+          product.id = 1;
+        }else{
+          product.id = Math.max(...products.map(p => {
+            return p.id;
+          })) +1;
+        }
+      
+        Product.create(product,(err)=>{
+          if (err){
+              console.log(Date() + "-"+err);
+              res.sendStatus(500);
+          }else{
+            res.status(201).send('Product created succesfully!');
+          }
+      });  
+    })
+    }else{
+      res.status(409).send('You cannot add a product assigned to a different seller than the logged account');
+    }
+  })
+  
 };

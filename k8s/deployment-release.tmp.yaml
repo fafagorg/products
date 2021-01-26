@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-release
+  namespace: app
+  labels:
+    app: products-release
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: products-release
+  template:
+    metadata:
+      labels:
+        app: products-release
+    spec:
+      containers:
+      - name: products
+        image: $DOCKER_IMAGES
+        ports:
+        - containerPort: 8080
+        env:
+          - name: NODE_ENV
+            value: production
+          - name: PORT
+            value: "8080"
+          - name: HOST_products
+            value: http://10.0.6.54:80
+          - name: HOST_REVIEWS
+            value: http://10.0.0.157:80
+      - name: mongo
+        image: mongo:4.4.3-bionic
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+          - mountPath: /data/db
+            name: products-release
+      volumes:
+        - name: products-release
+          persistentVolumeClaim:
+            claimName: products-release

@@ -1,6 +1,7 @@
 'use strict'
 const Product = require('../products');
 const commons = require("../commons");
+const AuthResource = require('../resources/authResource.js')
 
 module.exports.findproductbyid = function findproductbyid(req, res, next) {
   var productId = req.id.value;
@@ -10,13 +11,14 @@ module.exports.findproductbyid = function findproductbyid(req, res, next) {
         console.log(Date() + "-"+err);
         res.sendStatus(500);
     }else{
-      //let reviews = commons.reviewProduct(productId);
-      res.send(products.filter(p => p.id == productId).map((product)=>{
-          /*let p = product.cleanup();
-          p.reviews = reviews
-          return p;*/
+      var r = products.filter(p => p.id == productId);
+      if (r.length > 0){
+        res.send(r.map((product)=>{
           return product.cleanup();
         }));
+      }else{
+        res.status(404).send("not found");
+      }      
     }
 });
 };
@@ -24,27 +26,42 @@ module.exports.findproductbyid = function findproductbyid(req, res, next) {
 //OJO, SI HAY VARIOS PRODUCTOS CON EL MISMO ID, SÓLO BORRA UNO. NO DEBERÍA PASAR, PQ SOLO DEBERIA HABER UN PRODUCTO POR ID
 module.exports.deleteProduct = function deleteProduct(req, res, next) {
   var productId = req.id.value;
+  var token = res.req.headers.authorization.replace('Bearer ', '');
   console.log(Date() + " - DELETE a /products/{id}");
-  Product.deleteOne({ "id": productId },(err, products) => {
-      if (err) {
-        console.log(Date() + "-"+err);
-      }
-      if (products.length == 0) {
-          res.sendStatus(404);
-      }
-      else {
-        //res.send("Producto eliminado con éxito!")
-        //res.sendStatus(200);
-        res.status(200).send('Producto eliminado con éxito!');
-      }
-  });
+
+  var product = Product.find({id: productId}, (err, products) => {
+      if (products.length != 0){
+          var seller = products[0].seller;
+          AuthResource.auth(token).then( (response, error)=>{
+                  if (seller == response.userId){      
+                    Product.deleteOne({id: productId}, (err, products) => {
+                          if (err) {
+                            console.log(Date() + "-"+err);
+                            res.sendStatus(500);
+                          }
+                          if (products.deletedCount == 0) {
+                              res.sendStatus(404);
+                          }
+                          else {
+                            res.status(200).send('Product deleted succesfully!');
+                          }
+                      });
+                    }else{
+                      res.status(403).send("You are trying to delete a product that you do not own");
+                    }
+          }).catch((error) => {
+            res.status(403).send("Token error");
+          })
+      }else{
+        res.status(404).send("There is not any product with the given ID");
+      }   
+  }) 
 };
 
 module.exports.editProduct = function editProduct(req, res, next) {
   var productId = req.id.value;
   var updatedProduct = req.undefined.value;
   console.log(Date() + " - PUT a /products/{id}");     
-
   //COMPROBACIONES
   if (updatedProduct.id != productId || updatedProduct["id"] == null 
     || updatedProduct["price"] == null || updatedProduct["seller"] == null || updatedProduct["category"] == null 
@@ -52,15 +69,21 @@ module.exports.editProduct = function editProduct(req, res, next) {
   res.status(409).send("Conflicto al editar el producto. Revisa los parámetros");
   return;
   }    
-            
-  Product.updateOne({ "id": productId},updatedProduct,(err, products) => {
-  if (err) {
-    console.log("ERROOOOOOOOOOOOOOOOOOR: " + err);
-    res.sendStatus(500);
-  }else {
-    //console.log("editado con exito")
-    //res.sendStatus(200);
-    res.sendStatus(200);
-  }
+  var token = res.req.headers.authorization.replace('Bearer ', '');
+
+  AuthResource.auth(token).then( (response)=>{
+      var seller = response.userId;
+      if(seller != updatedProduct["seller"]){
+        res.status(403).send("Token error");
+      }else{
+          Product.updateOne({id: productId},updatedProduct,(err, products) => {
+          if (err) {
+            console.log("Error: " + err);
+            res.sendStatus(500);
+          }else {
+            res.status(200).send("Product " + updatedProduct.id + " edited succesfully");
+          }
+          });
+    }
   });
 };

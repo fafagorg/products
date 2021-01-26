@@ -1,19 +1,17 @@
 'use strict'
 const Product = require('../products');
 const commons = require("../commons");
+const AuthResource = require('../resources/authResource.js')
+
 
 module.exports.findproductsbyclient = function findproductsbyclient(req, res, next) {
   var clientId = req.id.value;
-  //console.log(req);
   console.log(Date() + " - GET a /products/client/clientId");
   Product.find({},(err,products)=>{
-    //console.log(products);
     if (err){
         console.log(Date() + "-"+err);
         res.sendStatus(500);
     }else{
-        //console.log(clientId);
-        //console.log(products);
         var r = products.filter(p => p.seller == clientId);
         if (r.length > 0){
           res.send(r.map((product)=>{
@@ -28,35 +26,24 @@ module.exports.findproductsbyclient = function findproductsbyclient(req, res, ne
 };
 
 module.exports.deleteAllClientProducts = function deleteAllClientProducts(req, res, next) {
-  var clientId = req.id.value;
-
-  /*if (!req.headers.authorization || req.headers.authorization == undefined) {
-    next(new Error("Authentication error"));
-  }
-
-  try {
-    let token = req.headers.authorization.replace('Bearer ', '');
-    let decoded = await commons.decodedJWT(token)
-    req.decoded = decoded;
-    req.decoded.token = token;
-    next();
-  } catch (error) {
-    console.log(error.response.data)
-    return res.sendStatus(403);
-  }*/
-
-  //console.log(Date() + " - DELETE a /products/client/{id}");
-  Product.deleteMany({ "seller": clientId },(err, products) => {
-      if (err) {
-        console.log(Date() + "-"+err);
-      }
-      if (products.length == 0) {
+  var clientId = req.id.value.toString();
+  var token = res.req.headers.authorization.replace('Bearer ', '');
+  AuthResource.auth(token).then( (response)=>{
+    if (response.userId == clientId){
+      Product.deleteMany({"seller":clientId},(err, products)=>{
+        if (err){
+            console.log(Date() + "-"+err);
+            res.sendStatus(500);
+        }
+        if (products.length == 0) {
           res.sendStatus(404);
-      }
-      else {
-        //res.send("Productos del cliente eliminado con éxito!")
-        //res.sendStatus(200);
-        res.status(200).send('Productos del cliente: ' + clientId + ' eliminado con éxito!');
-      }
-  });
-};
+        }
+        else{
+          res.status(200).send('Products of client: ' + clientId + ' deleted succesfully!');
+        }
+    });  
+    }else{
+      res.status(409).send('You cannot delete a product that you do not own');
+    }
+  })
+}
