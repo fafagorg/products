@@ -1,49 +1,17 @@
 'use strict';
+const server = require('./server');
+const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'production';
 
-var fs = require('fs'),
-    http = require('http'),
-    path = require('path');
+server.deploy(env).catch(err => { console.log(err); });
 
-var express = require("express");
-var app = express();
-var bodyParser = require('body-parser');
-app.use(bodyParser.json({
-  strict: false
-}));
-var oasTools = require('oas-tools');
-var jsyaml = require('js-yaml');
-var serverPort = 8080;
-
-var spec = fs.readFileSync(path.join(__dirname, '/api/oas-doc.yaml'), 'utf8');
-var oasDoc = jsyaml.safeLoad(spec);
-
-var options_object = {
-  controllers: path.join(__dirname, './controllers'),
-  loglevel: 'info',
-  strict: false,
-  router: true,
-  validator: true
-};
-
-oasTools.configure(options_object);
-
-oasTools.initialize(oasDoc, app, function() {
-  http.createServer(app).listen(serverPort, function() {
-    console.log("App running at http://localhost:" + serverPort);
-    console.log("________________________________________________________________");
-    if (options_object.docs !== false) {
-      console.log('API docs (Swagger UI) available on http://localhost:' + serverPort + '/docs');
-      console.log("________________________________________________________________");
-    }
-  });
+// quit on ctrl-c when running docker in terminal
+process.on('SIGINT', function onSigint() {
+    console.log('Got SIGINT (aka ctrl-c in docker). Graceful shutdown ', new Date().toISOString());
+    server.undeploy();
 });
 
-app.get('/info', function(req, res) {
-  res.send({
-    info: "This API was generated using oas-generator!",
-    name: oasDoc.info.title
-  });
-});
-app.get('/', function(req, res) {
-  res.send("<html><body><h1>API del microservicio de productos</h1></body></html>");
+// quit properly on docker stop
+process.on('SIGTERM', function onSigterm() {
+    console.log('Got SIGTERM (docker container stop). Graceful shutdown ', new Date().toISOString());
+    server.undeploy();
 });

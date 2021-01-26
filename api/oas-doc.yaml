@@ -14,7 +14,7 @@ info:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-  - url: 'http://productstore.swagger.io/api'
+  - url: 'http://productstore.swagger.io/api/v1'
 paths:
   /products:
     get:
@@ -81,6 +81,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /rates:
+    get:
+      description: |
+        Returns the exchange rates
+      operationId: getRates
+      responses:
+        '200':
+          description: rates response
+          content:
+            application/json:
+              schema:
+                type: array
         default:
           description: unexpected error
           content:
@@ -162,7 +180,7 @@ paths:
   '/products/client/{id}':
     get:
       description: Returns all products of a client
-      operationId: find products by client
+      operationId: findproductsbyclient
       parameters:
         - name: id
           in: path
@@ -211,20 +229,31 @@ components:
     Product:
       allOf:
         - $ref: '#/components/schemas/NewProduct'
-        - required:
-            - id
-          properties:
-            id:
-              type: integer
-              format: int64
+        #- required:
+        #    - id
+        #  properties:
+        #    id:
+        #      type: integer
+        #      format: int64*/
     NewProduct:
       required:
         - name
+        - category
+        - price
+        - seller
       properties:
         name:
           type: string
-        tag:
+        category:
           type: string
+        price:
+          type: integer
+          format: int64
+        seller:
+          type: string
+        id:
+          type: integer
+          format: int64
     Error:
       required:
         - code

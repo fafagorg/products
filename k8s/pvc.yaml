@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: products-main
+  namespace: app
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/var/data/products/pro"
+  claimRef:
+    name: products-main
+    namespace: app
+---
+apiVersion: apps/v1  
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: products-main
+  namespace: app
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi
+---
+apiVersion: apps/v1
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: products-release
+  namespace: app
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/var/data/products/pre"
+  claimRef:
+    name: products-release
+    namespace: app
+---
+apiVersion: apps/v1  
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: products-release
+  namespace: app
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi
+---
+apiVersion: apps/v1
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: products-develop
+  namespace: app
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/var/data/products/dev"
+  claimRef:
+    name: products-develop
+    namespace: app
+---
+apiVersion: apps/v1  
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: products-develop
+  namespace: app
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi
+---
