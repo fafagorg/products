@@ -19,8 +19,6 @@ if (MONGO_PORT && MONGO_DB) {
   DB_URL = 'mongodb://localhost:27017/productsBD';
 }
 
-//const DB_URL = (process.env.MONGO_URL || 'mongodb://localhost:27017/productsBD');
-
 const dbConnect = function(){
     const db = mongoose.connection;
     db.on('error', console.error.bind(console,'connection error: '));

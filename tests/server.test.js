@@ -42,9 +42,6 @@ describe('Tests array', function () {
         apiDBControllersTest();
     });
 
-    /* afterAll((done) => {
-        server.undeploy(done);
-    }); */
     afterAll(async () => {
         await new Promise(resolve => setTimeout(() => resolve(), 1000)); // avoid jest open handle error
       });
@@ -56,7 +53,6 @@ function apiDBControllersTest() {
         it("Should return an HTML document", () => {
             return axios.get(baseURL + "/").then((response) => {
                 expect(response.status).toBe(200);
-                //console.log(response);
                 expect(response.headers['content-type']).toEqual(expect.stringContaining("text/html; charset=utf-8"));
                 expect(response.data).toEqual(expect.stringContaining("<html><body><h1>API del microservicio de productos</h1></body></html>"));
             });
@@ -143,11 +139,10 @@ function apiDBControllersTest() {
                 headers:{
 
                 }}).then((response) => {
-          
-            }).catch((err) => {
-                //console.log(err);
-                expect(err.response.status).toBe(500);            
-            });
+                    expect(dbInsert).toBeCalledWith(product, expect.any(Function));
+                }).catch((err) => {
+                    expect(err.response.status).toBe(500);            
+                });
         });
     });
 
@@ -167,7 +162,6 @@ function apiDBControllersTest() {
 
         it("Should return the products of the client given in the URL", () => {
             return axios.get(baseURL + '/api/v1/products/client/b').then((response) => {
-                //console.log(response);
                 expect(response.status).toBe(200);
                 expect(response.data).toBeArrayOfSize(1);
                 expect(dbFind).toBeCalledWith({}, expect.any(Function));
@@ -177,14 +171,9 @@ function apiDBControllersTest() {
 
         it("Should return a 404 Not Found if the ID of the client given in the URL doesn't exist", () => {
             return axios.get(baseURL + '/api/v1/products/client/c').then((response) => {
-                //console.log(response);
                 expect(dbFind).toBeCalledWith({}, expect.any(Function));
-
-            
             }).catch((err) => {
-                //console.log(err);
                 expect(err.response.status).toBe(404);
-                //done(err);
             });           
 
         });

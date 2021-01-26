@@ -21,6 +21,7 @@ module.exports.findProducts = function findProducts(req, res, next) {
       }else{
           var r = products;
 
+          //PARAMS FILTERS
           if (keyWord){
               console.log("Keyword");
             r =  r.filter(p => p.name.includes(keyWord));
@@ -52,8 +53,6 @@ module.exports.findProducts = function findProducts(req, res, next) {
 module.exports.addProduct = function addProduct(req, res, next) {
   var product = req.undefined.value;
   var userId = product.seller;
-  //req.headers
-  //console.log(res.req);
   var token = res.req.headers.authorization.replace('Bearer ', '');
   AuthResource.auth(token).then( (response)=>{
     if (response.userId == userId){
@@ -65,14 +64,13 @@ module.exports.addProduct = function addProduct(req, res, next) {
             return p.id;
           })) +1;
         }
-
       
         Product.create(product,(err)=>{
           if (err){
               console.log(Date() + "-"+err);
               res.sendStatus(500);
           }else{
-            res.status(201).send('Producto creado con éxito!');
+            res.status(201).send('Product created succesfully!');
           }
       });  
     })

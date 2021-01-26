@@ -14,16 +14,11 @@ module.exports.findproductbyid = function findproductbyid(req, res, next) {
       var r = products.filter(p => p.id == productId);
       if (r.length > 0){
         res.send(r.map((product)=>{
-          /*let p = product.cleanup();
-          p.reviews = reviews
-          return p;*/
           return product.cleanup();
         }));
       }else{
         res.status(404).send("not found");
-      }
-      //let reviews = commons.reviewProduct(productId);
-      
+      }      
     }
 });
 };
@@ -36,10 +31,8 @@ module.exports.deleteProduct = function deleteProduct(req, res, next) {
 
   var product = Product.find({id: productId}, (err, products) => {
       if (products.length != 0){
-        console.log(products)
           var seller = products[0].seller;
           AuthResource.auth(token).then( (response, error)=>{
-            console.log(response.userId)
                   if (seller == response.userId){      
                     Product.deleteOne({id: productId}, (err, products) => {
                           if (err) {
