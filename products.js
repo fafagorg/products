@@ -15,7 +15,7 @@ const productSchema = new mongoose.Schema({
         required: true
       },
     seller: {
-        type: Number,
+        type: String,
         required: true
       },
     id: {
