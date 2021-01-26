@@ -34,7 +34,7 @@ spec:
         ports:
         - containerPort: 27017
         volumeMounts:
-          - mountPath: "/data"
+          - mountPath: /data/db
             name: products-develop
       volumes:
         - name: products-develop
