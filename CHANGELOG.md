@@ -1,4 +1,8 @@
-# 1.1.0 (2021-01-27)
+## [1.1.1](https://github.com/fafagorg/products/compare/v1.1.0...v1.1.1) (2021-01-27)
+
+
+
+# [1.1.0](https://github.com/fafagorg/products/compare/6cafd89688f6940bee5d8c08e78cd8c1ff8b4b4e...v1.1.0) (2021-01-27)
 
 
 ### Bug Fixes
