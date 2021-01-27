@@ -190,7 +190,7 @@ jobs:
         GCLOUD_API_KEY: "${{ secrets.GCLOUD_API_KEY }}"
       run: |
         export DOCKER_IMAGES=fafagoproducts/productsapi:latest
-        export BRANCH_NAME=master
+        export BRANCH_NAME=main
         echo $(ls)
         /usr/bin/envsubst < ./k8s/deployment-$BRANCH_NAME.tmp.yaml > ./k8s/deployment.yaml
         /usr/bin/envsubst < ./k8s/service.tmp.yaml > ./k8s/service.yaml
